@@ -24,6 +24,11 @@ module.exports = async () => {
     users.push({
       firstname: faker.person.firstName(),
       lastname: faker.person.lastName(),
+      email: faker.internet.email(),
+      address: faker.location.streetAddress(),
+      phone: faker.phone.number(),
+      password: "123456", // En un caso real, la contraseña debería estar hasheada.
+    
     });
   }
 
