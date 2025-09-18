@@ -43,10 +43,4 @@ class User extends Model {
   }
 }
 
-//Asociacio que va a tener las ordenes de los usuarios
-// Con respecto a los usuarios
-// Es decir, traemos las ordenes a los usuarios y a cada
-// Usuario le damos su orden
-// JAJAJA No se si me explico pero esto va a quedar pendiente
-
 module.exports = User;
