@@ -14,10 +14,10 @@
  */
 
 const faker = require("@faker-js/faker").fakerES;
-const { Article } = require("../models");
+const { Product } = require("../models");
 
 module.exports = async () => {
-  const articles = [];
+  const products = [];
 
   for (let i = 0; i < 500; i++) {
     articles.push({
@@ -26,6 +26,6 @@ module.exports = async () => {
     });
   }
 
-  await Article.bulkCreate(articles);
+  await Product.bulkCreate(products);
   console.log("[Database] Se corrió el seeder de Articles.");
 };

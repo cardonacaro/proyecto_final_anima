@@ -1,18 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const articleController = require("../controllers/articleController");
+const productController = require("../controllers/productController");
 
 /*
- * API endpoints relacionados a los artículos.
+ * API endpoints relacionados a los Productos.
  *
- * Notar que todos estos endpoints tienen como prefijo el string "/articles",
+ * Notar que todos estos endpoints tienen como prefijo el string "/product",
  * tal como se definió en el archivo `routes/index.js`.
  */
 
-router.get("/", articleController.index);
-router.post("/", articleController.store);
-router.get("/:id", articleController.show);
-router.patch("/:id", articleController.update);
-router.delete("/:id", articleController.destroy);
+router.get("/", productController.index);
+router.post("/", productController.store);
+router.get("/:id", productController.show);
+router.patch("/:id", productController.update);
+router.delete("/:id", productController.destroy);
 
 module.exports = router;

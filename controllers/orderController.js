@@ -8,7 +8,11 @@ async function index(req, res) {
     const orders = await Order.findAll({
       include: [
         { model: User, attributes: ["id", "firstname", "lastname", "email"] },
-        { model: Product, attributes: ["id", "name", "price"], through: { attributes: ["quantity"] } },
+        {
+          model: Product,
+          attributes: ["id", "name", "price"],
+          through: { attributes: ["quantity"] },
+        },
       ],
     });
     res.json(orders);
@@ -24,7 +28,11 @@ async function show(req, res) {
     const order = await Order.findByPk(id, {
       include: [
         { model: User, attributes: ["id", "firstname", "lastname", "email"] },
-        { model: Product, attributes: ["id", "name", "price"], through: { attributes: ["quantity"] } },
+        {
+          model: Product,
+          attributes: ["id", "name", "price"],
+          through: { attributes: ["quantity"] },
+        },
       ],
     });
 
@@ -55,7 +63,11 @@ async function store(req, res) {
     const orderWithDetails = await Order.findByPk(newOrder.id, {
       include: [
         { model: User, attributes: ["id", "firstname", "lastname", "email"] },
-        { model: Product, attributes: ["id", "name", "price"], through: { attributes: ["quantity"] } },
+        {
+          model: Product,
+          attributes: ["id", "name", "price"],
+          through: { attributes: ["quantity"] },
+        },
       ],
     });
 
