@@ -8,7 +8,7 @@ const sequelize = new Sequelize(
     host: process.env.DB_HOST,
     dialect: process.env.DB_CONNECTION,
     logging: false,
-  },
+  }
 );
 
 // Requerir los modelos:
@@ -24,11 +24,22 @@ Order.initModel(sequelize);
 OrderItem.initModel(sequelize);
 
 // Definir asociaciones:
-User.hasMany(Order, { foreignKey: "userId" });
-Order.belongsTo(User, { foreignKey: "userId" });
 
-Order.belongsToMany(Product, { through: OrderItem, foreignKey: "orderId" });
-Product.belongsToMany(Order, { through: OrderItem, foreignKey: "productId" });
+// 🧑 User ↔ Order (1:N)
+User.hasMany(Order, { foreignKey: "userId", as: "orders" });
+Order.belongsTo(User, { foreignKey: "userId", as: "user" });
+
+// 📦 Order ↔ Product (N:M a través de OrderItem)
+Order.belongsToMany(Product, { through: OrderItem, foreignKey: "orderId", otherKey: "productId" });
+Product.belongsToMany(Order, { through: OrderItem, foreignKey: "productId", otherKey: "orderId" });
+
+// 📝 Order ↔ OrderItem (1:N explícito)
+Order.hasMany(OrderItem, { foreignKey: "orderId", as: "items" });
+OrderItem.belongsTo(Order, { foreignKey: "orderId", as: "order" });
+
+// 🛒 Product ↔ OrderItem (1:N explícito)
+Product.hasMany(OrderItem, { foreignKey: "productId", as: "orderItems" });
+OrderItem.belongsTo(Product, { foreignKey: "productId", as: "product" });
 
 module.exports = {
   sequelize,
@@ -37,8 +48,6 @@ module.exports = {
   Order,
   OrderItem,
 };
-
-
 
 
 
