@@ -1,6 +1,15 @@
 const Admin = require("../models/Admin");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { expressjwt: expressJwt } = require("express-jwt");
+
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+const autenticacion = jwt({
+  secret: process.env.JWT_SECRET,
+  algorithms: ["HS256"],
+});
 
 const adminController = {
   async index(req, res) {
@@ -16,12 +25,11 @@ const adminController = {
     try {
       const { firstname, lastname, email, password } = req.body;
 
-      const hashedPassword = await bcrypt.hash(password, 10);
       const newAdmin = await Admin.create({
         firstname,
         lastname,
         email,
-        password: hashedPassword,
+        password,
       });
 
       res.status(201).json(newAdmin);
@@ -44,9 +52,6 @@ const adminController = {
     try {
       const admin = await Admin.findByPk(req.params.id);
       if (!admin) return res.status(404).json({ message: "Administrador no encontrado" });
-
-      const { password } = req.body;
-      if (password) req.body.password = await bcrypt.hash(password, 10);
 
       await admin.update(req.body);
       res.json(admin);
@@ -73,10 +78,11 @@ const adminController = {
       const admin = await Admin.findOne({ where: { email } });
       if (!admin) return res.status(401).json({ message: "Credenciales inválidas" });
 
-      const isMatch = await bcrypt.compare(password, admin.password);
-      if (!isMatch) return res.status(401).json({ message: "Credenciales inválidas" });
+      if (password !== admin.password) {
+        return res.status(401).json({ message: "Credenciales inválidas" });
+      }
 
-      const token = jwt.sign({ id: admin.id, role: "admin" }, process.env.JWT_SECRET, {
+      const token = jwt.sign({ id: admin.id, email: admin.email }, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
 
