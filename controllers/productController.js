@@ -3,7 +3,6 @@ const router = express.Router();
 const productController = require("../controllers/productController");
 
 module.exports = router;
-s;
 // controllers/productController.js
 const Product = require("../models/product");
 
